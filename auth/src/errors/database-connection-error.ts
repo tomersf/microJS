@@ -1,8 +1,9 @@
+import httpStatus from "http-status";
 import { CustomError } from "./custom-error";
 
 export class DatabaseConnectionError extends CustomError {
     reason = 'Error connecting to database'
-    statusCode = 500;
+    statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     constructor() {
         super('Error connection to database')
     }

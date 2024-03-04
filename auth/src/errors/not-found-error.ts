@@ -1,7 +1,8 @@
+import httpStatus from "http-status";
 import { CustomError } from "./custom-error";
 
 export class NotFoundError extends CustomError {
-    statusCode = 404
+    statusCode = httpStatus.NOT_FOUND
     constructor() {
         super('Route not found')
     }
