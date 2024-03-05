@@ -9,6 +9,7 @@ import { signoutRouter } from './routes/signout'
 import { signupRouter } from './routes/signup'
 import { errorHandler } from './middlewares/error-handler'
 import { NotFoundError } from './errors/not-found-error'
+import Env from './utils/env'
 
 const app = express()
 app.set('trust proxy', true)
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(cookieSession({
     signed: false,
     secure: true,
+    name: 'session'
 }))
 
 app.use(currentUserRouter)
@@ -31,6 +33,7 @@ app.all('*', async () => {
 app.use(errorHandler)
 
 const start = async () => {
+    Env.validateEnvVariables()
     try {
         await mongoose.connect('mongodb://auth-mongo-srv:27017/auth')
         console.log('connected to mongodb!')
