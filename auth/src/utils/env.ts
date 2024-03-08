@@ -1,5 +1,6 @@
 interface EnvVars {
     JWT_KEY: string
+    NODE_ENV: string
 }
 
 type KeysEnum<T> = {
@@ -8,6 +9,7 @@ type KeysEnum<T> = {
 
 const envKeys: KeysEnum<EnvVars> = {
     JWT_KEY: true,
+    NODE_ENV: true
 }
 
 class Env {
@@ -23,6 +25,10 @@ class Env {
             throw new Error(`${env} must be defined`);
         }
         return process.env[env]!;
+    }
+
+    static set(envName: keyof EnvVars, value: string) {
+        process.env[envName] = value;
     }
 }
 
