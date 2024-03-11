@@ -5,24 +5,23 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import React, { useState } from "react";
 
-import { ApiError, APIError } from "@/lib/types";
+import { APIError } from "@/lib/types";
+import useRequest from "@/hooks/use-request";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<APIError[]>([]);
+  const { doRequest, errors } = useRequest({
+    url: "/api/users/signup",
+    method: "post",
+    body: {
+      email,
+      password,
+    },
+  });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post("/api/users/signup", {
-        email,
-        password,
-      });
-    } catch (error) {
-      setErrors((error as ApiError).response.data.errors);
-    }
+    doRequest(e);
   };
 
   return (
@@ -40,16 +39,7 @@ const Page = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      {errors.length > 0 && (
-        <div className="flex flex-col bg-red-600/30 rounded-md p-2">
-          <ul>
-            {errors.map((err) => (
-              <li key={err.message}>{err.message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
+      {errors}
       <Button>Sign Up</Button>
     </form>
   );

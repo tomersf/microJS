@@ -4,7 +4,7 @@ export interface APIError {
     field: string
 }
 
-export interface ApiError {
+export interface AppError {
     response: {
         data: {
             errors: APIError[]
