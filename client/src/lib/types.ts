@@ -11,3 +11,11 @@ export interface AppError {
         }
     }
 }
+
+export interface User {
+    currentUser: {
+        id: number
+        name: string
+        email: string
+    }
+}

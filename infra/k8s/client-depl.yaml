@@ -15,6 +15,11 @@ spec:
       containers:
       - name: client
         image: tomersf/client
+        env:
+          - name: INGRESS_URL
+            value: "https://ingress-nginx-controller.ingress-nginx.svc.cluster.local"
+          - name: DOMAIN_NAME
+            value: 'ticketing.dev'
         ports:
           - containerPort: 3000
         resources:

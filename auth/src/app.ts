@@ -20,6 +20,8 @@ app.use(cookieSession({
     name: 'session'
 }))
 
+
+
 app.use(currentUserRouter)
 app.use(signinRouter)
 app.use(signoutRouter)

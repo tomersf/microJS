@@ -1,5 +1,5 @@
+import AxiosController from "@/lib/axios-controller";
 import { AppError } from "@/lib/types";
-import axios from "axios";
 import { useState } from "react";
 
 type AxiosMethod = "get" | "post" | "put" | "delete";
@@ -8,9 +8,10 @@ interface UseRequestProps {
   url: string;
   method: AxiosMethod;
   body: any;
+  onSuccess?: () => void;
 }
 
-const useRequest = ({ url, method, body }: UseRequestProps) => {
+const useRequest = ({ url, method, body, onSuccess }: UseRequestProps) => {
   const [errors, setErrors] = useState<React.ReactNode>(null);
 
   const doRequest = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -18,7 +19,10 @@ const useRequest = ({ url, method, body }: UseRequestProps) => {
 
     try {
       setErrors(null);
-      const response = await axios[method](url, body);
+      const response = await AxiosController.client[method](url, body);
+      if (onSuccess) {
+        onSuccess();
+      }
       return response.data;
     } catch (error) {
       setErrors(

@@ -1,15 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
 import React, { useState } from "react";
-
-import { APIError } from "@/lib/types";
 import useRequest from "@/hooks/use-request";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [email, setEmail] = useState("");
+  const router = useRouter();
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
     url: "/api/users/signup",
@@ -18,6 +17,7 @@ const Page = () => {
       email,
       password,
     },
+    onSuccess: () => router.push("/"),
   });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
