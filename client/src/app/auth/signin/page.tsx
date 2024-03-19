@@ -12,7 +12,7 @@ const Page = () => {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
-    url: "/api/users/signup",
+    url: "/api/users/signin",
     method: "post",
     body: {
       email,
@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <form className="flex flex-col items-center gap-2" onSubmit={onSubmit}>
-      <h1>Sign Up</h1>
+      <h1>Sign In</h1>
       <div>
         <label>Email Address</label>
         <Input value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -41,7 +41,7 @@ const Page = () => {
         />
       </div>
       {errors}
-      <Button>Sign Up</Button>
+      <Button>Sign In</Button>
     </form>
   );
 };

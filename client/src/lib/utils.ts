@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers"
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -13,4 +14,10 @@ export function getAllHeaders(headers: ReadonlyHeaders) {
     _headers[key] = value
   }
   return _headers
+}
+
+
+export function redirectAndRefresh(router: AppRouterInstance, url: string) {
+  router.push(url)
+  router.refresh()
 }

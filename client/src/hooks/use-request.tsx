@@ -14,8 +14,10 @@ interface UseRequestProps {
 const useRequest = ({ url, method, body, onSuccess }: UseRequestProps) => {
   const [errors, setErrors] = useState<React.ReactNode>(null);
 
-  const doRequest = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const doRequest = async (event?: React.FormEvent<HTMLFormElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
 
     try {
       setErrors(null);
