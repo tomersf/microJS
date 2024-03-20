@@ -55,12 +55,8 @@ class AxiosController {
             data,
         };
 
-        try {
-            const response = await axios(mergedConfig);
-            return response.data;
-        } catch (error) {
-            throw new Error((error as Error).message);
-        }
+        const response = await axios(mergedConfig);
+        return response.data;
     }
 }
 

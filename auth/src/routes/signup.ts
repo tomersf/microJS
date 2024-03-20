@@ -3,9 +3,7 @@ import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 
 import { User } from '../models/user';
-import { BadRequestError } from '../errors/bad-request-error';
-import Env from '../utils/env';
-import { validateRequest } from '../middlewares/validate-request';
+import { BadRequestError, validateRequest, Env } from '@tomersftickets/common';
 import httpStatus from 'http-status';
 
 const router = express.Router();

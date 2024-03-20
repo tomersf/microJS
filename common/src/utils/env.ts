@@ -12,7 +12,7 @@ const envKeys: KeysEnum<EnvVars> = {
     NODE_ENV: true
 }
 
-class Env {
+export class Env {
     static validateEnvVariables() {
         for (const [key, value] of Object.entries(envKeys)) {
             if (value && !process.env[key]) {
@@ -31,5 +31,3 @@ class Env {
         process.env[envName] = value;
     }
 }
-
-export default Env;

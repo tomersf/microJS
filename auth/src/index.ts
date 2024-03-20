@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 import app from "./app"
-import Env from './utils/env'
+import { Env } from '@tomersftickets/common'
 
 
 const start = async () => {

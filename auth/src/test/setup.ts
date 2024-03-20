@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import request from 'supertest'
 
 import app from '../app'
-import Env from '../utils/env'
+import { Env } from '@tomersftickets/common'
 import httpStatus from 'http-status'
 
 declare global {
