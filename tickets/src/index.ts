@@ -1,12 +1,12 @@
 import mongoose from "mongoose"
 
 import app from "./app"
-import { getEnv, validateEnvVariables } from "./utils/env"
+import { getEnv, validateEnvVariables } from "./util/env"
 
 
 const start = async () => {
     validateEnvVariables()
-    let dbUri = getEnv('DB_URL')
+    const dbUri = getEnv('DB_URL')
     try {
         await mongoose.connect(dbUri)
         console.log('connected to mongodb!')

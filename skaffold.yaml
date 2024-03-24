@@ -25,4 +25,12 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.{ts,tsx}'
+    - image: tomersf/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: 'src/**/*.ts'
   

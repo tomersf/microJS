@@ -1,18 +1,16 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import request from 'supertest'
+import jwt from 'jsonwebtoken'
 
-import app from '../app'
-import { Env } from '@tomersftickets/common'
-import httpStatus from 'http-status'
+import { getEnv, setEnv } from '../util/env'
 
 declare global {
-    var signin: () => Promise<string[] | undefined>;
+    var signin: () => string[];
 }
 
 let mongo: MongoMemoryServer
 beforeAll(async () => {
-    Env.set('JWT_KEY', 'test')
+    setEnv('JWT_KEY', 'test')
     mongo = await MongoMemoryServer.create()
     const mongoUri = mongo.getUri()
 
@@ -35,18 +33,15 @@ afterAll(async () => {
 });
 
 
-global.signin = async () => {
-    const email = 'test@test.com'
-    const password = '1234'
+global.signin = () => {
 
-    const response = await request(app)
-        .post('/api/users/signup')
-        .send({
-            email, password
-        })
-        .expect(httpStatus.CREATED)
-
-    const cookie = response.get('Set-Cookie')
-
-    return cookie;
+    const payload = {
+        id: new mongoose.Types.ObjectId().toHexString(),
+        email: 'test@test.com'
+    }
+    const token = jwt.sign(payload, getEnv('JWT_KEY'))
+    const session = { jwt: token }
+    const sessionJSON = JSON.stringify(session)
+    const base64 = Buffer.from(sessionJSON).toString('base64')
+    return [`session=${base64}`];
 }
