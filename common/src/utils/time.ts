@@ -4,7 +4,7 @@ const ONE_MINUTE_IN_MS = ONE_SECOND_IN_MS * 60
 const ONE_HOUR_IN_MS = ONE_MINUTE_IN_MS * 60
 const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24
 
-export default {
+export const time = {
     ONE_SECOND_IN_MS,
     ONE_MINUTE_IN_MS,
     ONE_HOUR_IN_MS,

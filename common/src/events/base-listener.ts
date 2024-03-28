@@ -1,6 +1,6 @@
 import { Message, Stan } from 'node-nats-streaming';
 import { Subjects } from './subjects';
-import time from '../utils/time';
+import { time } from '../utils/time';
 
 interface Event {
   subject: Subjects;
