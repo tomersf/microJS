@@ -1,0 +1,12 @@
+
+const ONE_SECOND_IN_MS = 1000
+const ONE_MINUTE_IN_MS = ONE_SECOND_IN_MS * 60
+const ONE_HOUR_IN_MS = ONE_MINUTE_IN_MS * 60
+const ONE_DAY_IN_MS = ONE_HOUR_IN_MS * 24
+
+export default {
+    ONE_SECOND_IN_MS,
+    ONE_MINUTE_IN_MS,
+    ONE_HOUR_IN_MS,
+    ONE_DAY_IN_MS,
+}
