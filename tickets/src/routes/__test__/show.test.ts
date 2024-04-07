@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from '../app'
+import app from '../../app'
 import httpStatus from 'http-status'
 import mongoose from 'mongoose'
 

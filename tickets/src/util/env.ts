@@ -4,6 +4,9 @@ export interface EnvVars {
     JWT_KEY: string;
     DB_URL: string;
     NODE_ENV: string
+    NATS_CLUSTER_ID: string;
+    NATS_CLIENT_ID: string;
+    NATS_URL: string;
 }
 
 export type EnvVarsKeys = keyof EnvVars;
@@ -11,7 +14,10 @@ export type EnvVarsKeys = keyof EnvVars;
 export const dummyEnvVars: EnvVars = {
     DB_URL: '',
     JWT_KEY: '',
-    NODE_ENV: ''
+    NODE_ENV: '',
+    NATS_CLUSTER_ID: '',
+    NATS_CLIENT_ID: '',
+    NATS_URL: ''
 }
 
 export function validateEnvVariables() {
