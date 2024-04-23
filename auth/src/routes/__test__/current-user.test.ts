@@ -6,7 +6,7 @@ import httpStatus from 'http-status'
 
 it('responds with details about current user', async () => {
     const cookie = await global.signin()
-    const response = await request(app).get('/api/users/currentuser').set('Cookie', cookie).send().expect(httpStatus.OK)
+    const response = await request(app).get('/api/users/currentuser').set('Cookie', cookie!).send().expect(httpStatus.OK)
     expect(response.body.currentUser.email).toEqual('test@test.com')
 
 });
