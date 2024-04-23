@@ -8,7 +8,7 @@ export class Env {
     }
     static get(env: string) {
         if (!process.env[env]) {
-            return null
+            return ''
         }
         return process.env[env]!;
     }
