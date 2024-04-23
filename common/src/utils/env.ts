@@ -8,7 +8,7 @@ export class Env {
     }
     static get(env: string) {
         if (!process.env[env]) {
-            throw new Error(`${env} must be defined`);
+            return null
         }
         return process.env[env]!;
     }
