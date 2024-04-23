@@ -5,6 +5,8 @@ import { Ticket } from '../models/ticket';
 import { getEnv } from '../util/env';
 import { Order } from '../models/order';
 import httpStatus from 'http-status';
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -37,6 +39,17 @@ router.post('/api/orders',
             ticket
         })
         await order.save()
+
+        new OrderCreatedPublisher(natsWrapper.client).publish({
+            id: order.id,
+            status: order.status,
+            userId: order.userId,
+            expiresAt: order.expiresAt.toISOString(),
+            ticket: {
+                id: ticket.id,
+                price: ticket.price
+            }
+        })
 
         res.status(httpStatus.CREATED).send(order)
     })

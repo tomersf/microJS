@@ -2,13 +2,15 @@ import { NotAuthorizedError, NotFoundError, OrderStatus, requireAuth } from '@to
 import express from 'express';
 import { Order } from '../models/order';
 import httpStatus from 'http-status';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
 
 router.delete('/api/orders/:orderId', requireAuth, async (req, res) => {
     const { orderId } = req.params
-    const order = await Order.findById(orderId)
+    const order = await Order.findById(orderId).populate('ticket')
     if (!order) {
         throw new NotFoundError()
     }
@@ -18,6 +20,13 @@ router.delete('/api/orders/:orderId', requireAuth, async (req, res) => {
 
     order.status = OrderStatus.Cancelled
     await order.save()
+
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+        id: order.id,
+        ticket: {
+            id: order.ticket.id
+        }
+    })
 
     res.status(httpStatus.NO_CONTENT).send(order)
 })
