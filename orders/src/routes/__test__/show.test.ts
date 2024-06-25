@@ -2,48 +2,50 @@ import request from "supertest";
 import app from "../../app";
 import { Ticket } from "../../models/ticket";
 import httpStatus from "http-status";
+import mongoose from "mongoose";
 
+it("fetches the order", async () => {
+  const ticket = Ticket.build({
+    price: 20,
+    title: "concert",
+    id: new mongoose.Types.ObjectId().toHexString(),
+  });
+  await ticket.save();
+  const cookie = await global.signin();
 
-it('fetches the order', async () => {
-    const ticket = Ticket.build({
-        price: 20,
-        title: 'concert',
-    })
-    await ticket.save();
-    const cookie = await global.signin();
+  const response = await request(app)
+    .post("/api/orders")
+    .set("Cookie", cookie)
+    .send({ ticketId: ticket.id })
+    .expect(httpStatus.CREATED);
 
-    const response = await request(app)
-        .post('/api/orders')
-        .set('Cookie', cookie)
-        .send({ ticketId: ticket.id })
-        .expect(httpStatus.CREATED);
+  const order = await request(app)
+    .get(`/api/orders/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send()
+    .expect(httpStatus.OK);
 
-    const order = await request(app)
-        .get(`/api/orders/${response.body.id}`)
-        .set('Cookie', cookie)
-        .send()
-        .expect(httpStatus.OK);
+  expect(order.body.id).toEqual(response.body.id);
+});
 
-    expect(order.body.id).toEqual(response.body.id);
-})
+it("returns error if one user tries to fetch other order", async () => {
+  const ticket = Ticket.build({
+    price: 20,
+    title: "concert",
+    id: new mongoose.Types.ObjectId().toHexString(),
+  });
+  await ticket.save();
+  const cookie = global.signin();
 
-it('returns error if one user tries to fetch other order', async () => {
-    const ticket = Ticket.build({
-        price: 20,
-        title: 'concert',
-    })
-    await ticket.save();
-    const cookie = global.signin();
+  const response = await request(app)
+    .post("/api/orders")
+    .set("Cookie", cookie)
+    .send({ ticketId: ticket.id })
+    .expect(httpStatus.CREATED);
 
-    const response = await request(app)
-        .post('/api/orders')
-        .set('Cookie', cookie)
-        .send({ ticketId: ticket.id })
-        .expect(httpStatus.CREATED);
-
-    const order = await request(app)
-        .get(`/api/orders/${response.body.id}`)
-        .set('Cookie', global.signin())
-        .send()
-        .expect(httpStatus.UNAUTHORIZED);
-})
+  const order = await request(app)
+    .get(`/api/orders/${response.body.id}`)
+    .set("Cookie", global.signin())
+    .send()
+    .expect(httpStatus.UNAUTHORIZED);
+});
